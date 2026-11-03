@@ -1,0 +1,60 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.ruff_cache/
+.mypy_cache/
+
+# IDE（仅提交 VS Code 共享配置，个人偏好不入库）
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+*.swp
+
+# 运行期产物（数据 / 湖仓 / Spark 本地状态）
+data/raw/
+data/processed/
+data/chaos/
+warehouse/
+metastore_db/
+derby.log
+.spark/
+.tmp/
+.ivy2/
+.hadoop/
+logs/
+*.log
+hs_err_pid*.log
+
+# pip 临时目录（TEMP 异常时可能落在工作区，防误提交）
+pip-build-tracker-*/
+pip-install-*/
+pip-ephem-wheel-cache-*/
+
+# 本机运行残留（pytest 临时目录 / Spark 临时目录 / JVM 崩溃转储）
+pytest-of-*/
+tmp*/
+replay_pid*.log
+*.tmp.txt
+
+# 环境变量与密钥
+.env
+*.local
+
+# Airflow 运行期文件
+airflow/logs/
+
+# OS
+Thumbs.db
+.DS_Store
