@@ -1,0 +1,144 @@
+# DataPulse 本地基础设施 —— 按 16GB 内存预算分 profile 启动：
+#   docker compose --profile core up -d        # 日常开发：Postgres + Redis（约 0.8 GB）
+#   docker compose --profile airflow up -d     # 阶段二起：Airflow（额外约 2 GB，依赖 core 里的 postgres/redis）
+#   docker compose --profile realtime up -d    # 数开支线 S5：Kafka + MySQL（约 2 GB）
+# 规则：不同时全开；跑 Spark 批式任务时只保留 core。
+
+name: datapulse
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: datapulse-postgres
+    profiles: ["core", "airflow", "realtime"]
+    environment:
+      POSTGRES_USER: datapulse
+      POSTGRES_PASSWORD: datapulse
+      POSTGRES_DB: datapulse
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U datapulse -d datapulse"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
+  redis:
+    image: redis:7-alpine
+    container_name: datapulse-redis
+    profiles: ["core", "airflow", "realtime"]
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
+  # ---- Airflow（LocalExecutor）。注意：本地开发环境 Airflow 元数据与业务库共用 datapulse 库，
+  #      生产环境需分库（见 docs/production.md，S4 支线）。----
+  airflow-init:
+    build:
+      context: ./airflow
+      dockerfile: Dockerfile.airflow
+    image: datapulse-airflow:2.9.3
+    container_name: datapulse-airflow-init
+    profiles: ["airflow"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment: &airflow-common
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://datapulse:datapulse@postgres/datapulse
+      AIRFLOW__CELERY__BROKER_URL: redis://redis:6379/0
+      AIRFLOW__CELERY__RESULT_BACKEND: db+postgresql://datapulse:datapulse@postgres/datapulse
+    volumes:
+      - ./:/opt/airflow/dags
+      - ./airflow/logs:/opt/airflow/logs
+    command: >
+      bash -c "airflow db migrate &&
+      airflow users create -u admin -p admin -f Data -l Pulse -r Admin -e admin@datapulse.local"
+
+  airflow-webserver:
+    image: datapulse-airflow:2.9.3
+    container_name: datapulse-airflow-webserver
+    profiles: ["airflow"]
+    depends_on:
+      airflow-init:
+        condition: service_completed_successfully
+    environment: *airflow-common
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./:/opt/airflow/dags
+      - ./airflow/logs:/opt/airflow/logs
+    command: webserver
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  airflow-scheduler:
+    image: datapulse-airflow:2.9.3
+    container_name: datapulse-airflow-scheduler
+    profiles: ["airflow"]
+    depends_on:
+      airflow-init:
+        condition: service_completed_successfully
+    environment: *airflow-common
+    volumes:
+      - ./:/opt/airflow/dags
+      - ./airflow/logs:/opt/airflow/logs
+    command: scheduler
+
+  # ---- 数开支线 S5 实时链路（Flink CDC / Kafka）----
+  mysql:
+    image: mysql:8.0
+    container_name: datapulse-mysql
+    profiles: ["realtime"]
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: trade
+      MYSQL_USER: datapulse
+      MYSQL_PASSWORD: datapulse
+    command: --binlog-format=ROW --server-id=1
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysqldata:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-udatapulse", "-pdatapulse"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
+  kafka:
+    image: bitnami/kafka:3.7
+    container_name: datapulse-kafka
+    profiles: ["realtime"]
+    environment:
+      KAFKA_CFG_NODE_ID: 0
+      KAFKA_CFG_PROCESS_ROLES: controller,broker
+      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: 0@kafka:9093
+      KAFKA_CFG_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
+      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE: "true"
+    ports:
+      - "9092:9092"
+    healthcheck:
+      test: ["CMD-SHELL", "kafka-topics.sh --bootstrap-server localhost:9092 --list"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+volumes:
+  pgdata:
+  mysqldata:

@@ -1,0 +1,24 @@
+# DataPulse：DAG 目录挂载仓库根，排除非 DAG 路径（尤其 airflow/logs 挂载点，避免递归环路）
+airflow/logs
+airflow/*.txt
+airflow/Dockerfile*
+venv
+.git
+.tmp
+.ivy2
+.hadoop
+.pytest_cache
+data
+warehouse
+docs
+tests
+web
+core
+foundation
+chaos
+eval
+sql
+pytest-of-Administrator
+tmp*
+api_out.log
+streamlit_out.log
