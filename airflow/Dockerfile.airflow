@@ -1,0 +1,14 @@
+# DataPulse Airflow 自定义镜像：官方镜像 + Java17 + 项目依赖
+FROM apache/airflow:2.9.3-python3.11
+
+USER root
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends openjdk-17-jre-headless \
+    && rm -rf /var/lib/apt/lists/* \
+    && mkdir -p /tmp/dqp \
+    && chown -R airflow:root /tmp/dqp \
+    && chmod -R 777 /tmp/dqp
+
+USER airflow
+COPY requirements.airflow.txt /tmp/requirements.airflow.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.airflow.txt
