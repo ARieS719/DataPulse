@@ -2,11 +2,11 @@
 
 [![CI](https://github.com/ARieS719/DataPulse/actions/workflows/ci.yml/badge.svg)](https://github.com/ARieS719/DataPulse/actions/workflows/ci.yml)
 
-> 我做这个项目，是为了解决一个我实际见过的问题：**脏数据总是在落盘之后才被发现；等告警出来，下游报表和模型已经被污染了。**
+> 该项目源于一个实际存在的数据质量痛点：**脏数据总是在落盘之后才被发现；等告警出来，下游报表和模型已经被污染了。**
 >
-> 所以我没有做"又一个数仓 demo"，而是给数仓装了一扇**发布前的质量闸门**：数据先写进 Iceberg 审计分支（main 零暴露）→ 规则引擎 + 动态水位线合并扫描 → 通过才 `fast_forward` 原子发布，不通过就熔断、下游 DAG 自动挂起。再叠上字段级血缘算爆炸半径、AI 生成根因诊断书，把"发现 → 定位 → 归因"整条链路闭环。
+> 因此该项目没有停留在"又一个数仓 demo"，而是为数仓加了一扇**发布前的质量闸门**：数据先写入 Iceberg 审计分支（main 零暴露）→ 规则引擎 + 动态水位线合并扫描 → 通过才 `fast_forward` 原子发布，不通过即熔断、下游 DAG 自动挂起。再叠加字段级血缘计算爆炸半径、AI 生成根因诊断书，把"发现 → 定位 → 归因"整条链路闭环。
 
-## 📊 结果速览（100 万行基准档 · 一台笔记本实测）
+## 📊 结果速览（100 万行基准档 · 单机实测）
 
 > 技术主管可以只看这张表：每行结论都有可复现的证据文件，点开即是原始记录。
 
@@ -21,11 +21,9 @@
 | 测试与 CI 门禁 | 147 项测试、覆盖率 **95.34%**（门禁 ≥85%）、ruff 0 违规 | [ci.yml](.github/workflows/ci.yml) |
 | 字段级血缘 | 6 个 SQL 脚本 → 42 列节点 / 40 条边；blast radius 一次 BFS 12ms | [lineage_stats.json](docs/benchmarks/lineage_stats.json) |
 
-## 为什么"事后巡检"救不了数据质量
+## 该项目要解决的四个问题
 
-我不想复述概念，直接讲我做这个项目想解决的四个具体问题：
-
-- **规则配置成本高**：上千张表靠手写 SQL 巡检，业务一迭代就漏配 → **事前** 让 AI 生成 YAML 规则契约，人只做审阅。
+- **规则配置成本高**：上千张表靠手写 SQL 巡检，业务一迭代就漏配 → **事前** 由 AI 生成 YAML 规则契约，人只做审阅。
 - **事后告警太晚**：脏数据先落盘再告警，下游报表已经脏了 → **事中** WAP：写审计分支，校验通过才原子发布，脏数据永远到不了下游。
 - **静态规则有盲区**：拦得住主键重复，拦不住"渠道断流暴跌"和"AI 答非所问" → **动态** 3σ 水位线 + PSI 漂移 + LLM 语义抽样。
 - **排障链路割裂**：多源同步延迟要人工翻几十个 ETL 脚本 → **事后** SQLGlot 字段级血缘 + AI-RCA 根因诊断书。
@@ -56,19 +54,19 @@
         └───────────────────────────────┘
 ```
 
-## 关键设计决策（我为什么这么选）
+## 关键设计决策
 
-| 决策 | 我的理由 |
+| 决策 | 理由 |
 | --- | --- |
 | 用 Iceberg 分支做 WAP，而不是"影子表" | 分支是表内一等公民：审计分支与 main 共享元数据与数据文件，写完直接 `fast_forward` 原子切换——不用双写、不用搬家、不丢历史快照 |
-| 把 N 条 YAML 规则编译成**一次** Spark SQL 扫描 | 逐条规则要扫 N 遍表；我把所有规则合成一个聚合查询，单次扫描出全部指标（混沌实验里 4 张表 × 多规则的门禁扫描是秒级） |
+| 把 N 条 YAML 规则编译成**一次** Spark SQL 扫描 | 逐条规则要扫 N 遍表；所有规则合成一个聚合查询，单次扫描出全部指标（混沌实验里 4 张表 × 多规则的门禁扫描为秒级） |
 | 静态规则 + 3σ/MAD 水位线 + PSI + LLM 语义抽样（四层） | 静态规则拦结构脏数据；水位线拦"渠道断流"这类量级异常；PSI 拦分布漂移；LLM 拦语义污染——混沌矩阵证明四类故障全部命中 |
-| sqlglot + networkx 做血缘 | 纯 Python AST 解析，不引图数据库；blast radius 就是一次 BFS（42 节点/40 边的图，实测 12ms） |
-| 9 类故障注入器 **+ 阴性对照** | 只证明"能拦住"是自欺欺人，必须同时证明"干净数据不误杀"。矩阵里 8 个阴性对照就是干这个的——这也是我最终把误报率压到 0.0 的方式 |
+| sqlglot + networkx 做血缘 | 纯 Python AST 解析，不引入图数据库；blast radius 就是一次 BFS（42 节点/40 边的图，实测 12ms） |
+| 9 类故障注入器 **+ 阴性对照** | 只证明"能拦住"是自欺欺人，必须同时证明"干净数据不误杀"。矩阵中 8 个阴性对照即为此设计——也是最终把误报率压到 0.0 的方式 |
 
 ## 技术栈（现代数据栈，单机可跑）
 
-| 层级 | 选型 | 为什么 |
+| 层级 | 选型 | 理由 |
 | --- | --- | --- |
 | 湖仓存储与计算 | PySpark + Apache Iceberg | 零伪分布式开销；分支/快照原生支持 WAP |
 | 质量校验引擎 | 自研 YAML→Spark SQL 编译器 | N 条规则合并为单次聚合扫描 |
@@ -141,14 +139,14 @@ docker compose --profile airflow up -d --build
 
 完整计划与验收标准见 [docs/roadmap.md](docs/roadmap.md)。
 
-## 我踩过的坑（这部分是我最想讲的）
+## 环境排障记录（值得留档的三个问题）
 
-本机是 i5-12500H / 16GB / Windows 11 笔记本。几件值得记的事：
+本项目在 i5-12500H / 16GB / Windows 11 笔记本上从零搭建，遇到三个值得记录的问题：
 
-1. **Iceberg 的向量化读把 JVM 搞崩了**：medium 档写 DWD 必崩（`EXCEPTION_ACCESS_VIOLATION`），我换了 JDK 8/17/21、SerialGC、关 JIT、钉 P 核、换压缩算法，全部无效；最后靠二分实验锁定是 **Iceberg 自己的 Arrow 向量化读取器**，加表属性 `read.parquet.vectorization.enabled=false` 后一次通过。完整排查过程与求助文档见 [docs/troubleshooting.md](docs/troubleshooting.md) 与 [docs/jvm_crash_report.md](docs/jvm_crash_report.md)。
-2. **WAP 的两个语义坑**：`spark.wap.branch` 会话参数要靠**表级**属性 `write.wap.enabled=true` 门控（catalog 属性无效）；`fast_forward(from, to)` 的语义是把 **from** 快进到 **to**——方向搞反过一次，查了 Iceberg 源码才纠正。
-3. **Windows 路径空格会打爆 Spark 启动脚本**：`spark-class2.cmd` 的未引号重定向、`--conf` 值经 `cmd %*` 转发被撕碎……我写了 `scripts/apply_win_patches.py` 一把修掉（含 `for /f` 必须加 `usebackq` 的坑）。
+1. **Iceberg 向量化读导致 JVM 崩溃**：medium 档写 DWD 必崩（`EXCEPTION_ACCESS_VIOLATION`）。排查中更换 JDK 8/17/21、SerialGC、关闭 JIT、CPU 亲和绑定、更换压缩算法，均无效；最终通过二分实验定位到 **Iceberg 自身的 Arrow 向量化读取器**，加表属性 `read.parquet.vectorization.enabled=false` 后一次通过。完整排查过程与求助文档见 [docs/troubleshooting.md](docs/troubleshooting.md) 与 [docs/jvm_crash_report.md](docs/jvm_crash_report.md)。
+2. **WAP 的两个语义细节**：`spark.wap.branch` 会话参数需由**表级**属性 `write.wap.enabled=true` 门控（catalog 属性无效）；`fast_forward(from, to)` 的语义是把 **from** 快进到 **to**——方向曾用反，查阅 Iceberg 1.5.2 源码后纠正。
+3. **Windows 路径空格导致 Spark 启动失败**：`spark-class2.cmd` 的未加引号重定向、`--conf` 值经 `cmd %*` 转发被空格撕裂等问题，统一由 `scripts/apply_win_patches.py` 修复（其中 `for /f` 必须加 `usebackq` 的细节值得注意）。
 
 ## 诚实边界
 
-这是**单机演示级实现**：在一台笔记本上以 100 万行为基准验证完整闭环，不是生产集群。多租户、规则市场、云平台映射、资源成本模型不在本仓库范围内（生产化思路见 docs/production.md）。另外，数开支线 S1–S5（dbt 建模、Spark 调优实验、Flink 实时链路）只留了骨架，尚未启动。
+该项目是**单机演示级实现**：在笔记本上以 100 万行为基准验证完整闭环，不是生产集群。多租户、规则市场、云平台映射、资源成本模型不在仓库范围内（生产化思路见 docs/production.md）。数开支线 S1–S5（dbt 建模、Spark 调优实验、Flink 实时链路）仅保留骨架，尚未启动。
