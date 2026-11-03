@@ -1,0 +1,9 @@
+# 复制到 ~/.dbt/profiles.yml（或与 dbt_project.yml 同目录）后使用
+# 本机用 DuckDB 零服务验证建模方法论；生产映射 dbt-spark（Iceberg），见 foundation/dbt/README.md
+datapulse_duckdb:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "data/dbt.duckdb"
+      threads: 4

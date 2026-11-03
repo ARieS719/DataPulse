@@ -1,0 +1,45 @@
+version: 2
+
+models:
+  - name: stg_users
+    description: 用户贴源清洗（空值规整）
+    columns:
+      - name: user_id
+        description: 用户主键
+        tests: [unique, not_null]
+      - name: age
+        description: 年龄（缺失补 -1）
+        tests:
+          - not_null
+  - name: stg_orders
+    description: 订单贴源清洗
+    columns:
+      - name: order_id
+        description: 订单主键
+        tests: [unique, not_null]
+      - name: status
+        description: 订单状态（枚举白名单）
+        tests:
+          - accepted_values:
+              values: ['已支付', '待支付', '已取消', '已退款']
+      - name: user_id
+        description: 用户外键
+        tests:
+          - relationships:
+              to: ref('stg_users')
+              field: user_id
+  - name: stg_payments
+    description: 支付流水贴源清洗
+    columns:
+      - name: payment_id
+        tests: [unique, not_null]
+      - name: order_id
+        tests:
+          - relationships:
+              to: ref('stg_orders')
+              field: order_id
+  - name: gmv_daily
+    description: GMV 口径日报
+    columns:
+      - name: gmv
+        description: 成功支付金额合计（指标字典口径 gmv_v1）

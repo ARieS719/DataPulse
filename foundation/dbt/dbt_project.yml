@@ -1,0 +1,30 @@
+# DataPulse dbt 建模工程（S1 支线）
+# 运行：pip install "dbt-duckdb>=1.8" 后，在仓库根目录执行
+#   dbt deps --project-dir foundation/dbt
+#   dbt build --project-dir foundation/dbt
+#   dbt docs generate --project-dir foundation/dbt
+
+name: datapulse
+version: "1.0.0"
+config-version: 2
+
+profile: datapulse_duckdb
+
+model-paths: ["models"]
+snapshot-paths: ["snapshots"]
+macro-paths: ["macros"]
+
+vars:
+  # 源数据目录（相对仓库根目录；可用环境变量 DQP_RAW 覆盖）
+  raw_path: "data/raw"
+
+models:
+  datapulse:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table
+
+snapshots:
+  datapulse:
+    +target_schema: snapshots
