@@ -139,14 +139,6 @@ docker compose --profile airflow up -d --build
 
 完整计划与验收标准见 [docs/roadmap.md](docs/roadmap.md)。
 
-## 环境排障记录（值得留档的三个问题）
-
-本项目在 i5-12500H / 16GB / Windows 11 笔记本上从零搭建，遇到三个值得记录的问题：
-
-1. **Iceberg 向量化读导致 JVM 崩溃**：medium 档写 DWD 必崩（`EXCEPTION_ACCESS_VIOLATION`）。排查中更换 JDK 8/17/21、SerialGC、关闭 JIT、CPU 亲和绑定、更换压缩算法，均无效；最终通过二分实验定位到 **Iceberg 自身的 Arrow 向量化读取器**，加表属性 `read.parquet.vectorization.enabled=false` 后一次通过。完整排查过程与求助文档见 [docs/troubleshooting.md](docs/troubleshooting.md) 与 [docs/jvm_crash_report.md](docs/jvm_crash_report.md)。
-2. **WAP 的两个语义细节**：`spark.wap.branch` 会话参数需由**表级**属性 `write.wap.enabled=true` 门控（catalog 属性无效）；`fast_forward(from, to)` 的语义是把 **from** 快进到 **to**——方向曾用反，查阅 Iceberg 1.5.2 源码后纠正。
-3. **Windows 路径空格导致 Spark 启动失败**：`spark-class2.cmd` 的未加引号重定向、`--conf` 值经 `cmd %*` 转发被空格撕裂等问题，统一由 `scripts/apply_win_patches.py` 修复（其中 `for /f` 必须加 `usebackq` 的细节值得注意）。
-
 ## 诚实边界
 
 该项目是**单机演示级实现**：在笔记本上以 100 万行为基准验证完整闭环，不是生产集群。多租户、规则市场、云平台映射、资源成本模型不在仓库范围内（生产化思路见 docs/production.md）。数开支线 S1–S5（dbt 建模、Spark 调优实验、Flink 实时链路）仅保留骨架，尚未启动。
