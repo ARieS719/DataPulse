@@ -1,0 +1,16 @@
+# 混沌实验专用规则集：ODS fact_payment（orphan_fk 静态通道）
+version: 1
+table: fact_payment
+rules:
+  - name: payment_id_unique
+    type: unique
+    level: P0
+    column: payment_id
+  - name: order_fk_integrity
+    type: fk_integrity
+    level: P0
+    fk_column: order_id
+    ref_table: fact_order
+    ref_column: order_id
+    max_orphan_ratio: 0.01
+    description: 多源同步延迟制造的孤儿流水在此熔断

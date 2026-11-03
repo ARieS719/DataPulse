@@ -1,0 +1,17 @@
+# 混沌实验专用规则集：ODS ai_qa_log（schema_drift 静态通道）
+# 阈值 0.9：分支含历史干净数据时，30% 漂移批次仍把整体填充率拉到 90% 以下 → 触发
+version: 1
+table: ai_qa_log
+rules:
+  - name: latency_fill
+    type: not_null
+    level: P0
+    column: latency_ms
+    min_fill_ratio: 0.9
+    description: 数值改字符串（N/A）解析失败 → NULL → 触发
+  - name: answer_fill
+    type: not_null
+    level: P0
+    column: answer
+    min_fill_ratio: 0.9
+    description: 核心键缺失检测

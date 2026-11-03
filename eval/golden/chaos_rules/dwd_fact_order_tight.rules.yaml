@@ -1,0 +1,15 @@
+# 混沌实验专用规则集：fact_order 高精度总分对齐（amount_truncate 静态通道）
+# 对齐语义：订单应付金额（amount - coupon_discount）== 支付流水 pay_amount；
+# 阈值 0.001：只截断 amount 时应付金额合计产生约 0.3% 偏差，必须被拦截
+version: 1
+table: fact_order
+rules:
+  - name: pay_amount_align_tight
+    type: sum_align
+    level: P0
+    agg_expr: "amount - coupon_discount"
+    agg_filter: "status = '已支付'"
+    ref_table: fact_payment
+    ref_agg_column: pay_amount
+    max_diff_ratio: 0.001
+    description: 高精度跨表对齐（float→int 强转产生约 0.3% 偏差时熔断）

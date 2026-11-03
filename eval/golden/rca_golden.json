@@ -1,0 +1,50 @@
+[
+  {
+    "scenario": "duplicate_pk_v1",
+    "fault_type": "duplicate_pk",
+    "signals": ["unique_violation"],
+    "expected": "CDC 消息重复消费 / 主键生成冲突"
+  },
+  {
+    "scenario": "orphan_fk_v1",
+    "fault_type": "orphan_fk",
+    "signals": ["fk_orphan"],
+    "expected": "多源同步延迟（外键孤儿）"
+  },
+  {
+    "scenario": "amount_truncate_v1",
+    "fault_type": "amount_truncate",
+    "signals": ["sum_align_mismatch"],
+    "expected": "金额精度截断 / 漏同步"
+  },
+  {
+    "scenario": "timestamp_mix_v1",
+    "fault_type": "timestamp_mix",
+    "signals": ["timestamp_format"],
+    "expected": "跨时区时间戳错位 / 精度截断"
+  },
+  {
+    "scenario": "schema_drift_v1",
+    "fault_type": "schema_drift",
+    "signals": ["schema_drift"],
+    "expected": "上游 Schema 漂移"
+  },
+  {
+    "scenario": "channel_drop_v1",
+    "fault_type": "channel_drop",
+    "signals": ["volume_dip"],
+    "expected": "上游渠道断流（隐性暴跌）"
+  },
+  {
+    "scenario": "psi_shift_v1",
+    "fault_type": "psi_shift",
+    "signals": ["psi_shift"],
+    "expected": "客群特征分布偏移"
+  },
+  {
+    "scenario": "semantic_pollution_v1",
+    "fault_type": "semantic_pollution",
+    "signals": ["semantic_pollution"],
+    "expected": "非结构化语料污染（模型退化）"
+  }
+]

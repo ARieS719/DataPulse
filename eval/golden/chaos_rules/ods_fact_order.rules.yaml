@@ -1,0 +1,19 @@
+# 混沌实验专用规则集：ODS fact_order（duplicate_pk / timestamp_mix / channel_drop 静态通道）
+version: 1
+table: fact_order
+rules:
+  - name: order_id_unique
+    type: unique
+    level: P0
+    column: order_id
+  - name: order_time_fill
+    type: not_null
+    level: P0
+    column: order_time
+    min_fill_ratio: 0.9
+    description: 时间戳解析失败（timestamp_mix 混写）会在 ODS 产生 NULL；0.9 阈值可在分支含历史干净数据时仍检出 30% 漂移批次
+  - name: row_count_floor
+    type: row_count
+    level: P0
+    min_rows: 100
+    description: 渠道断流导致行数暴跌时的兜底静态规则（动态 3σ 为主通道）

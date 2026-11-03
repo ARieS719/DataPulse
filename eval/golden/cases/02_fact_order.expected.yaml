@@ -1,0 +1,41 @@
+# fact_order 标准答案（资深工程师手写，Golden Dataset 用例 02）
+version: 1
+table: fact_order
+rules:
+  - name: order_id_unique
+    type: unique
+    level: P0
+    column: order_id
+    description: 订单主键唯一（CDC 重复消费熔断点）
+  - name: amount_range
+    type: range
+    level: P1
+    column: amount
+    min: 0.01
+    max: 100000
+    max_violation_ratio: 0.001
+    description: 订单金额合理区间
+  - name: status_enum
+    type: accepted_values
+    level: P0
+    column: status
+    values: [已支付, 待支付, 已取消, 已退款]
+    min_match_ratio: 0.999
+    description: 订单状态枚举白名单
+  - name: user_fk_integrity
+    type: fk_integrity
+    level: P0
+    fk_column: user_id
+    ref_table: dim_user
+    ref_column: user_id
+    max_orphan_ratio: 0.001
+    description: 订单必须关联存在的用户
+  - name: pay_amount_align
+    type: sum_align
+    level: P0
+    agg_expr: "amount - coupon_discount"
+    agg_filter: "status = '已支付'"
+    ref_table: fact_payment
+    ref_agg_column: pay_amount
+    max_diff_ratio: 0.01
+    description: 已支付订单应付金额与支付流水总额对齐
