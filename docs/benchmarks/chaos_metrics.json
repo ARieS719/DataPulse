@@ -1,0 +1,220 @@
+{
+  "generated_at": "2026-11-04 02:46:21",
+  "scale": "medium",
+  "seed": 42,
+  "p0_block_rate": 1.0,
+  "recall": 1.0,
+  "false_positive_rate": 0.0,
+  "rows": [
+    {
+      "case": "duplicate_pk",
+      "group": "positive",
+      "channel": "static",
+      "detected": true,
+      "expected": true,
+      "ok": true,
+      "evidence": {
+        "detected": true,
+        "verdict": "BLOCK",
+        "error": null
+      }
+    },
+    {
+      "case": "duplicate_pk_clean",
+      "group": "negative",
+      "channel": "static",
+      "detected": false,
+      "expected": false,
+      "ok": true,
+      "evidence": {
+        "detected": false,
+        "verdict": "PASS",
+        "error": null
+      }
+    },
+    {
+      "case": "orphan_fk",
+      "group": "positive",
+      "channel": "static",
+      "detected": true,
+      "expected": true,
+      "ok": true,
+      "evidence": {
+        "detected": true,
+        "verdict": "BLOCK",
+        "error": null
+      }
+    },
+    {
+      "case": "orphan_fk_clean",
+      "group": "negative",
+      "channel": "static",
+      "detected": false,
+      "expected": false,
+      "ok": true,
+      "evidence": {
+        "detected": false,
+        "verdict": "PASS",
+        "error": null
+      }
+    },
+    {
+      "case": "amount_truncate",
+      "group": "positive",
+      "channel": "static",
+      "detected": true,
+      "expected": true,
+      "ok": true,
+      "evidence": {
+        "detected": true,
+        "verdict": "BLOCK",
+        "error": null
+      }
+    },
+    {
+      "case": "amount_truncate_clean",
+      "group": "negative",
+      "channel": "static",
+      "detected": false,
+      "expected": false,
+      "ok": true,
+      "evidence": {
+        "detected": false,
+        "verdict": "PASS",
+        "error": null
+      }
+    },
+    {
+      "case": "timestamp_mix",
+      "group": "positive",
+      "channel": "static",
+      "detected": true,
+      "expected": true,
+      "ok": true,
+      "evidence": {
+        "detected": true,
+        "verdict": "BLOCK",
+        "error": null
+      }
+    },
+    {
+      "case": "timestamp_mix_clean",
+      "group": "negative",
+      "channel": "static",
+      "detected": false,
+      "expected": false,
+      "ok": true,
+      "evidence": {
+        "detected": false,
+        "verdict": "PASS",
+        "error": null
+      }
+    },
+    {
+      "case": "schema_drift",
+      "group": "positive",
+      "channel": "static",
+      "detected": true,
+      "expected": true,
+      "ok": true,
+      "evidence": {
+        "detected": true,
+        "verdict": "BLOCK",
+        "error": null
+      }
+    },
+    {
+      "case": "schema_drift_clean",
+      "group": "negative",
+      "channel": "static",
+      "detected": false,
+      "expected": false,
+      "ok": true,
+      "evidence": {
+        "detected": false,
+        "verdict": "PASS",
+        "error": null
+      }
+    },
+    {
+      "case": "channel_drop",
+      "group": "positive",
+      "channel": "volume",
+      "detected": true,
+      "expected": true,
+      "ok": true,
+      "evidence": {
+        "detected": true,
+        "channel": "抖音",
+        "z": -5.157379,
+        "method": "zscore",
+        "current_daily": 1065.5
+      }
+    },
+    {
+      "case": "channel_drop_clean",
+      "group": "negative",
+      "channel": "volume",
+      "detected": false,
+      "expected": false,
+      "ok": true,
+      "evidence": {
+        "detected": false,
+        "channel": "京东",
+        "z": 0.0,
+        "method": "zscore",
+        "current_daily": 1223.3
+      }
+    },
+    {
+      "case": "psi_shift",
+      "group": "positive",
+      "channel": "psi",
+      "detected": true,
+      "expected": true,
+      "ok": true,
+      "evidence": {
+        "detected": true,
+        "psi": 10.0807
+      }
+    },
+    {
+      "case": "psi_shift_clean",
+      "group": "negative",
+      "channel": "psi",
+      "detected": false,
+      "expected": false,
+      "ok": true,
+      "evidence": {
+        "detected": false,
+        "psi": 0.0
+      }
+    },
+    {
+      "case": "semantic_pollution",
+      "group": "positive",
+      "channel": "semantic",
+      "detected": true,
+      "expected": true,
+      "ok": true,
+      "evidence": {
+        "detected": true,
+        "polluted": 10000,
+        "sampled": 200000
+      }
+    },
+    {
+      "case": "semantic_pollution_clean",
+      "group": "negative",
+      "channel": "semantic",
+      "detected": false,
+      "expected": false,
+      "ok": true,
+      "evidence": {
+        "detected": false,
+        "polluted": 0,
+        "sampled": 200000
+      }
+    }
+  ]
+}
