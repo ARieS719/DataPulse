@@ -1,0 +1,15 @@
+digraph lineage {
+  rankdir="LR";
+  node [shape=box, style="rounded"];
+  "ads_gmv_daily";
+  "dws_pay_daily";
+  "dws_trade_daily";
+  "fact_order";
+  "fact_payment";
+  "trade_order";
+  "dws_pay_daily" -> "ads_gmv_daily";
+  "dws_trade_daily" -> "ads_gmv_daily";
+  "fact_order" -> "dws_trade_daily";
+  "fact_payment" -> "dws_pay_daily";
+  "trade_order" -> "fact_order";
+}

@@ -1,0 +1,62 @@
+{
+  "sql_dir": "sql",
+  "files": 6,
+  "elapsed_ms": 12.1,
+  "stats": {
+    "column_nodes": 42,
+    "column_edges": 40,
+    "table_nodes": 6,
+    "table_edges": 5
+  },
+  "per_file": [
+    {
+      "path": "sql\\01_ods_fact_order.sql",
+      "target": "fact_order",
+      "edges": 8,
+      "error": null
+    },
+    {
+      "path": "sql\\02_dwd_fact_order.sql",
+      "target": "fact_order",
+      "edges": 13,
+      "error": null
+    },
+    {
+      "path": "sql\\03_dwd_fact_payment.sql",
+      "target": "fact_payment",
+      "edges": 11,
+      "error": null
+    },
+    {
+      "path": "sql\\04_dws_trade_daily.sql",
+      "target": "dws_trade_daily",
+      "edges": 5,
+      "error": null
+    },
+    {
+      "path": "sql\\05_dws_pay_daily.sql",
+      "target": "dws_pay_daily",
+      "edges": 6,
+      "error": null
+    },
+    {
+      "path": "sql\\06_ads_gmv_daily.sql",
+      "target": "ads_gmv_daily",
+      "edges": 5,
+      "error": null
+    }
+  ],
+  "blast": {
+    "table": "fact_order",
+    "downstream_tables": [
+      "dws_trade_daily",
+      "ads_gmv_daily"
+    ],
+    "depth_map": {
+      "fact_order": 0,
+      "dws_trade_daily": 1,
+      "ads_gmv_daily": 2
+    },
+    "max_depth": 2
+  }
+}
