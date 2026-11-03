@@ -1,0 +1,20 @@
+# DataPulse 指标字典（示例，S3 支线）
+# 口径即契约：任何报表/看板引用指标前，先与字典口径对齐
+metrics:
+  - name: gmv
+    owner: 数据产品组
+    caliber_sql: "SELECT SUM(pay_amount) FROM fact_payment WHERE pay_status = '成功'"
+    description: 成功支付金额合计（口径版本 gmv_v1）
+    tables: [fact_payment]
+
+  - name: order_cnt
+    owner: 数据产品组
+    caliber_sql: "SELECT COUNT(*) FROM fact_order WHERE status = '已支付'"
+    description: 已支付订单数
+    tables: [fact_order]
+
+  - name: qa_cnt
+    owner: 算法数据组
+    caliber_sql: "SELECT COUNT(*) FROM ai_qa_log"
+    description: AI 导购问答量
+    tables: [ai_qa_log]

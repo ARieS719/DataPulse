@@ -1,0 +1,2 @@
+# 已废弃目录：指标字典示例已迁移回 core/dq_engine/metrics/examples/metrics.yaml
+# （metrics 已实现为包，原遮蔽问题不复存在）
