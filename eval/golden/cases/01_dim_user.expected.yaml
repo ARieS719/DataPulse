@@ -1,0 +1,36 @@
+# dim_user 标准答案（资深工程师手写，Golden Dataset 用例 01）
+version: 1
+table: dim_user
+rules:
+  - name: user_id_unique
+    type: unique
+    level: P0
+    column: user_id
+    description: 用户主键唯一
+  - name: age_fill_ratio
+    type: not_null
+    level: P1
+    column: age
+    min_fill_ratio: 0.98
+    description: 年龄非空率不低于 98%
+  - name: gender_enum
+    type: accepted_values
+    level: P1
+    column: gender
+    values: [M, F, U]
+    min_match_ratio: 0.995
+    description: 性别枚举白名单
+  - name: city_tier_range
+    type: range
+    level: P1
+    column: city_tier
+    min: 1
+    max: 5
+    max_violation_ratio: 0.01
+    description: 城市等级取值 1-5
+  - name: user_row_count
+    type: row_count
+    level: P1
+    min_rows: 100
+    max_rows: 1000000
+    description: 用户量级下限（断流信号）

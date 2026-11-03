@@ -1,0 +1,38 @@
+# fact_payment 标准答案（资深工程师手写，Golden Dataset 用例 03）
+version: 1
+table: fact_payment
+rules:
+  - name: payment_id_unique
+    type: unique
+    level: P0
+    column: payment_id
+    description: 支付流水主键唯一
+  - name: order_fk_integrity
+    type: fk_integrity
+    level: P0
+    fk_column: order_id
+    ref_table: fact_order
+    ref_column: order_id
+    max_orphan_ratio: 0.001
+    description: 支付流水必须关联存在的订单（多源同步延迟孤儿检测）
+  - name: pay_amount_range
+    type: range
+    level: P1
+    column: pay_amount
+    min: 0
+    max: 100000
+    max_violation_ratio: 0.001
+    description: 支付金额非负且在合理区间
+  - name: pay_status_enum
+    type: accepted_values
+    level: P0
+    column: pay_status
+    values: [成功, 失败]
+    min_match_ratio: 0.999
+    description: 支付状态枚举白名单
+  - name: pay_time_not_null
+    type: not_null
+    level: P1
+    column: pay_time
+    min_fill_ratio: 0.99
+    description: 支付时间非空率
