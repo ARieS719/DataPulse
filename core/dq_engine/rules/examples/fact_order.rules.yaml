@@ -1,0 +1,53 @@
+# fact_order 交易订单表质量契约（示例，M2）
+# 由 AI 规则 Copilot 生成的标准模板形态（M2 阶段人工核对，M3 接入 Copilot）
+version: 1
+table: fact_order
+rules:
+  - name: order_id_unique
+    type: unique
+    level: P0
+    column: order_id
+    description: 订单主键必须唯一（CDC 重复消费会导致 P0 熔断）
+
+  - name: amount_range
+    type: range
+    level: P1
+    column: amount
+    min: 0.01
+    max: 100000
+    max_violation_ratio: 0.001
+    description: 订单金额应在合理区间（金额精度截断会越界）
+
+  - name: status_enum
+    type: accepted_values
+    level: P0
+    column: status
+    values: [已支付, 待支付, 已取消, 已退款]
+    min_match_ratio: 0.999
+    description: 订单状态必须在业务枚举白名单内
+
+  - name: user_fk_integrity
+    type: fk_integrity
+    level: P0
+    fk_column: user_id
+    ref_table: dim_user
+    ref_column: user_id
+    max_orphan_ratio: 0.001
+    description: 订单必须关联存在的用户（多源同步延迟会产生孤儿订单）
+
+  - name: pay_amount_align
+    type: sum_align
+    level: P0
+    agg_expr: "amount - coupon_discount"
+    agg_filter: "status = '已支付'"
+    ref_table: fact_payment
+    ref_agg_column: pay_amount
+    max_diff_ratio: 0.01
+    description: 订单应付金额与支付流水总额对齐（精度截断/漏同步会失衡）
+
+  - name: latest_order_timeliness
+    type: timeliness
+    level: P1
+    column: order_time
+    expect_not_before: "2025-03-30 00:00:00"
+    description: 最新订单时间不应早于预期（上游断流信号）
