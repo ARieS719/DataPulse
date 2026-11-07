@@ -1,0 +1,123 @@
+# DataPulse 数据字典契约（M6+ 治理侧）
+# 分级：L1 公开 / L2 内部 / L3 敏感（默认需脱敏）/ L4 机密（禁止出域）
+# mask 声明字典级脱敏要求；落地实施见 foundation/etl/etl_dwd.py（sha2 匿名化）
+version: 1
+tables:
+  ods.dim_user:
+    sla_hours: 24
+    owner: datapulse-dq
+    columns:
+      user_id:
+        dtype: string
+        definition: 用户唯一标识（PII）
+        sensitivity: L3
+        mask: sha2
+        rules: [user_id_unique]
+      age:
+        dtype: int
+        definition: 用户年龄
+        sensitivity: L2
+        rules: [age_range]
+      city:
+        dtype: string
+        definition: 注册城市
+        sensitivity: L1
+        rules: [city_enum]
+  ods.fact_order:
+    sla_hours: 12
+    owner: datapulse-dq
+    columns:
+      order_id:
+        dtype: string
+        definition: 订单主键
+        sensitivity: L1
+        rules: [order_id_unique]
+      user_id:
+        dtype: string
+        definition: 下单用户（PII）
+        sensitivity: L3
+        mask: sha2
+        rules: [user_fk_integrity]
+      order_time:
+        dtype: timestamp
+        definition: 下单时间（及时性判定依据）
+        sensitivity: L1
+        rules: [order_time_fill, latest_order_timeliness]
+      channel:
+        dtype: string
+        definition: 渠道（3σ 水位线检测对象）
+        sensitivity: L1
+        rules: [channel_enum]
+      amount:
+        dtype: decimal(12,2)
+        definition: 订单金额（元，精度截断检测对象）
+        sensitivity: L2
+        rules: [amount_range, pay_amount_align]
+      coupon_discount:
+        dtype: decimal(12,2)
+        definition: 优惠券抵扣金额
+        sensitivity: L2
+        rules: [pay_amount_align]
+      status:
+        dtype: string
+        definition: 订单状态枚举
+        sensitivity: L1
+        rules: [status_enum]
+  ods.fact_payment:
+    sla_hours: 12
+    owner: datapulse-dq
+    columns:
+      pay_id:
+        dtype: string
+        definition: 支付流水主键
+        sensitivity: L1
+        rules: [pay_id_unique]
+      order_id:
+        dtype: string
+        definition: 关联订单（跨表一致性依据）
+        sensitivity: L1
+        rules: [pay_order_fk]
+      pay_amount:
+        dtype: decimal(12,2)
+        definition: 实付金额（与订单应付金额对齐）
+        sensitivity: L2
+        rules: [pay_amount_align]
+      pay_time:
+        dtype: timestamp
+        definition: 支付时间（与下单时间先后关系）
+        sensitivity: L1
+        rules: [pay_time_fill]
+  ods.ai_qa_log:
+    sla_hours: 6
+    owner: datapulse-dq
+    columns:
+      qa_id:
+        dtype: string
+        definition: 问答日志主键
+        sensitivity: L1
+        rules: [qa_id_unique]
+      question:
+        dtype: string
+        definition: 用户问题（语义质检输入）
+        sensitivity: L2
+        rules: [question_fill]
+      answer:
+        dtype: string
+        definition: AI 回答（语义污染检测对象）
+        sensitivity: L2
+        rules: [answer_fill]
+      intent:
+        dtype: string
+        definition: 意图分层抽样键
+        sensitivity: L1
+        rules: [intent_enum]
+      model_version:
+        dtype: string
+        definition: 模型版本（抽样分层键）
+        sensitivity: L1
+        rules: []
+      latency_ms:
+        dtype: int
+        definition: 回答耗时（schema drift 检测对象）
+        sensitivity: L1
+        rules: [latency_fill]
