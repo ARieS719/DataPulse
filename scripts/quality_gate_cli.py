@@ -17,6 +17,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 sys.path.insert(0, str(REPO_ROOT / "core"))
 
+from dq_engine.alert import notify_block  # noqa: E402
 from dq_engine.quality_gate import run_wap_gate  # noqa: E402
 
 from foundation.etl.spark import build_spark  # noqa: E402
@@ -49,6 +50,9 @@ def main() -> int:
 
     blocked = [t for t, v, _, _ in results if v == "BLOCK"]
     if blocked:
+        # P0 告警闭环：熔断事件经通知器投递（日志恒定生效；DQP_WEBHOOK_URL 可选群机器人）
+        for t in blocked:
+            notify_block(f"local.ods.{t}", rules_failed=[])
         print(f"❌ 熔断：{blocked} 未合并，下游 DAG 挂起")
         return 1
     print("✅ 全部门禁通过，审计分支已原子合并")
