@@ -1,0 +1,1402 @@
+[
+  {
+    "qa_id": "q0000",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0001",
+    "question": "这个可以退货吗？",
+    "answer": "这款商品支持 7 天无理由退货，原包装退回即可。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0002",
+    "question": "电池能用多久？",
+    "answer": "这款耳机的续航约 30 小时，支持快充。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0003",
+    "question": "优惠券能用吗？",
+    "answer": "&&&%%%###",
+    "label": "polluted",
+    "fault_type": "gibberish"
+  },
+  {
+    "qa_id": "q0004",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券已叠加，实付金额以结算页为准。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0005",
+    "question": "什么时候发货？",
+    "answer": "该商品目前有货，下单后 48 小时内发出。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0006",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0007",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0008",
+    "question": "积分什么时候到账？",
+    "answer": "会员积分会在确认收货后 7 个工作日到账。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0009",
+    "question": "这个可以退货吗？",
+    "answer": "这款商品支持 7 天无理由退货，原包装退回即可。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0010",
+    "question": "这个可以退货吗？",
+    "answer": "这款商品支持 7 天无理由退货，原包装退回即可。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0011",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0012",
+    "question": "优惠券能用吗？",
+    "answer": "&&&%%%###",
+    "label": "polluted",
+    "fault_type": "gibberish"
+  },
+  {
+    "qa_id": "q0013",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券已叠加，实付金额以结算页为准。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0014",
+    "question": "这个可以退货吗？",
+    "answer": "这款商品支持 7 天无理由退货，原包装退回即可。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0015",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券已叠加，实付金额以结算页为准。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0016",
+    "question": "积分什么时候到账？",
+    "answer": "会员积分会在确认收货后 7 个工作日到账。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0017",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券已叠加，实付金额以结算页为准。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0018",
+    "question": "兼容我的手机吗？",
+    "answer": "此型号与您手机系统兼容，可放心购买。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0019",
+    "question": "电池能用多久？",
+    "answer": "这款耳机的续航约 30 小时，支持快充。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0020",
+    "question": "这个可以退货吗？",
+    "answer": "这款商品支持 7 天无理由退货，原包装退回即可。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0021",
+    "question": "什么时候发货？",
+    "answer": "该商品目前有货，下单后 48 小时内发出。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0022",
+    "question": "积分什么时候到账？",
+    "answer": "会员积分会在确认收货后 7 个工作日到账。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0023",
+    "question": "退货要运费吗？",
+    "answer": "退货要运费吗？退货要运费吗？退货要运费吗？",
+    "label": "polluted",
+    "fault_type": "echo"
+  },
+  {
+    "qa_id": "q0024",
+    "question": "电池能用多久？",
+    "answer": "这款耳机的续航约 30 小时，支持快充。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0025",
+    "question": "什么时候发货？",
+    "answer": "该商品目前有货，下单后 48 小时内发出。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0026",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券已叠加，实付金额以结算页为准。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0027",
+    "question": "退货要运费吗？",
+    "answer": "非质量问题退货运费由买家承担。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0028",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0029",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0030",
+    "question": "积分什么时候到账？",
+    "answer": "会员积分会在确认收货后 7 个工作日到账。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0031",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0032",
+    "question": "退货要运费吗？",
+    "answer": "非质量问题退货运费由买家承担。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0033",
+    "question": "退货要运费吗？",
+    "answer": "非质量问题退货运费由买家承担。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0034",
+    "question": "电池能用多久？",
+    "answer": "这款耳机的续航约 30 小时，支持快充。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0035",
+    "question": "这个可以退货吗？",
+    "answer": "这款商品支持 7 天无理由退货，原包装退回即可。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0036",
+    "question": "兼容我的手机吗？",
+    "answer": "此型号与您手机系统兼容，可放心购买。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0037",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0038",
+    "question": "积分什么时候到账？",
+    "answer": "会员积分会在确认收货后 7 个工作日到账。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0039",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0040",
+    "question": "电池能用多久？",
+    "answer": "这款耳机的续航约 30 小时，支持快充。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0041",
+    "question": "退货要运费吗？",
+    "answer": "非质量问题退货运费由买家承担。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0042",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券能用吗？优惠券能用吗？优惠券能用吗？",
+    "label": "polluted",
+    "fault_type": "echo"
+  },
+  {
+    "qa_id": "q0043",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0044",
+    "question": "这个可以退货吗？",
+    "answer": "这款商品支持 7 天无理由退货，原包装退回即可。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0045",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券已叠加，实付金额以结算页为准。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0046",
+    "question": "电池能用多久？",
+    "answer": "这款耳机的续航约 30 小时，支持快充。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0047",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0048",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券已叠加，实付金额以结算页为准。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0049",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0050",
+    "question": "积分什么时候到账？",
+    "answer": "会员积分会在确认收货后 7 个工作日到账。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0051",
+    "question": "电池能用多久？",
+    "answer": "这款耳机的续航约 30 小时，支持快充。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0052",
+    "question": "兼容我的手机吗？",
+    "answer": "此型号与您手机系统兼容，可放心购买。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0053",
+    "question": "退货要运费吗？",
+    "answer": "非质量问题退货运费由买家承担。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0054",
+    "question": "什么时候发货？",
+    "answer": "该商品目前有货，下单后 48 小时内发出。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0055",
+    "question": "退货要运费吗？",
+    "answer": "非质量问题退货运费由买家承担。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0056",
+    "question": "退货要运费吗？",
+    "answer": "非质量问题退货运费由买家承担。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0057",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券已叠加，实付金额以结算页为准。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0058",
+    "question": "电池能用多久？",
+    "answer": "这款耳机的续航约 30 小时，支持快充。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0059",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0060",
+    "question": "什么时候发货？",
+    "answer": "锟斤拷锟斤拷",
+    "label": "polluted",
+    "fault_type": "gibberish"
+  },
+  {
+    "qa_id": "q0061",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券已叠加，实付金额以结算页为准。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0062",
+    "question": "什么时候发货？",
+    "answer": "该商品目前有货，下单后 48 小时内发出。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0063",
+    "question": "兼容我的手机吗？",
+    "answer": "此型号与您手机系统兼容，可放心购买。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0064",
+    "question": "积分什么时候到账？",
+    "answer": "会员积分会在确认收货后 7 个工作日到账。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0065",
+    "question": "电池能用多久？",
+    "answer": "这款耳机的续航约 30 小时，支持快充。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0066",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券已叠加，实付金额以结算页为准。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0067",
+    "question": "退货要运费吗？",
+    "answer": "非质量问题退货运费由买家承担。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0068",
+    "question": "这个可以退货吗？",
+    "answer": "这款商品支持 7 天无理由退货，原包装退回即可。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0069",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券已叠加，实付金额以结算页为准。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0070",
+    "question": "这个可以退货吗？",
+    "answer": "这款商品支持 7 天无理由退货，原包装退回即可。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0071",
+    "question": "退货要运费吗？",
+    "answer": "非质量问题退货运费由买家承担。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0072",
+    "question": "积分什么时候到账？",
+    "answer": "会员积分会在确认收货后 7 个工作日到账。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0073",
+    "question": "电池能用多久？",
+    "answer": "这款耳机的续航约 30 小时，支持快充。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0074",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0075",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券已叠加，实付金额以结算页为准。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0076",
+    "question": "退货要运费吗？",
+    "answer": "非质量问题退货运费由买家承担。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0077",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券已叠加，实付金额以结算页为准。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0078",
+    "question": "兼容我的手机吗？",
+    "answer": "此型号与您手机系统兼容，可放心购买。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0079",
+    "question": "积分什么时候到账？",
+    "answer": "会员积分会在确认收货后 7 个工作日到账。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0080",
+    "question": "兼容我的手机吗？",
+    "answer": "此型号与您手机系统兼容，可放心购买。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0081",
+    "question": "什么时候发货？",
+    "answer": "该商品目前有货，下单后 48 小时内发出。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0082",
+    "question": "电池能用多久？",
+    "answer": "这款耳机的续航约 30 小时，支持快充。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0083",
+    "question": "什么时候发货？",
+    "answer": "该商品目前有货，下单后 48 小时内发出。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0084",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券已叠加，实付金额以结算页为准。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0085",
+    "question": "电池能用多久？",
+    "answer": "这款耳机的续航约 30 小时，支持快充。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0086",
+    "question": "积分什么时候到账？",
+    "answer": "会员积分会在确认收货后 7 个工作日到账。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0087",
+    "question": "积分什么时候到账？",
+    "answer": "会员积分会在确认收货后 7 个工作日到账。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0088",
+    "question": "退货要运费吗？",
+    "answer": "非质量问题退货运费由买家承担。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0089",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券已叠加，实付金额以结算页为准。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0090",
+    "question": "什么时候发货？",
+    "answer": "该商品目前有货，下单后 48 小时内发出。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0091",
+    "question": "兼容我的手机吗？",
+    "answer": "此型号与您手机系统兼容，可放心购买。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0092",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0093",
+    "question": "这个可以退货吗？",
+    "answer": "这款商品支持 7 天无理由退货，原包装退回即可。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0094",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0095",
+    "question": "什么时候发货？",
+    "answer": "该商品目前有货，下单后 48 小时内发出。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0096",
+    "question": "什么时候发货？",
+    "answer": "该商品目前有货，下单后 48 小时内发出。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0097",
+    "question": "积分什么时候到账？",
+    "answer": "会员积分会在确认收货后 7 个工作日到账。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0098",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0099",
+    "question": "积分什么时候到账？",
+    "answer": "会员积分会在确认收货后 7 个工作日到账。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0100",
+    "question": "积分什么时候到账？",
+    "answer": "会员积分会在确认收货后 7 个工作日到账。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0101",
+    "question": "兼容我的手机吗？",
+    "answer": "此型号与您手机系统兼容，可放心购买。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0102",
+    "question": "电池能用多久？",
+    "answer": "这款耳机的续航约 30 小时，支持快充。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0103",
+    "question": "这个可以退货吗？",
+    "answer": "这款商品支持 7 天无理由退货，原包装退回即可。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0104",
+    "question": "我该买哪个尺码？",
+    "answer": "我不知道你在说什么。",
+    "label": "polluted",
+    "fault_type": "off_topic"
+  },
+  {
+    "qa_id": "q0105",
+    "question": "电池能用多久？",
+    "answer": "这款耳机的续航约 30 小时，支持快充。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0106",
+    "question": "退货要运费吗？",
+    "answer": "非质量问题退货运费由买家承担。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0107",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0108",
+    "question": "电池能用多久？",
+    "answer": "这款耳机的续航约 30 小时，支持快充。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0109",
+    "question": "积分什么时候到账？",
+    "answer": "会员积分会在确认收货后 7 个工作日到账。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0110",
+    "question": "什么时候发货？",
+    "answer": "该商品目前有货，下单后 48 小时内发出。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0111",
+    "question": "兼容我的手机吗？",
+    "answer": "此型号与您手机系统兼容，可放心购买。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0112",
+    "question": "这个可以退货吗？",
+    "answer": "这款商品支持 7 天无理由退货，原包装退回即可。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0113",
+    "question": "电池能用多久？",
+    "answer": "这款耳机的续航约 30 小时，支持快充。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0114",
+    "question": "什么时候发货？",
+    "answer": "该商品目前有货，下单后 48 小时内发出。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0115",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0116",
+    "question": "电池能用多久？",
+    "answer": "这款耳机的续航约 30 小时，支持快充。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0117",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券已叠加，实付金额以结算页为准。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0118",
+    "question": "什么时候发货？",
+    "answer": "该商品目前有货，下单后 48 小时内发出。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0119",
+    "question": "退货要运费吗？",
+    "answer": "非质量问题退货运费由买家承担。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0120",
+    "question": "什么时候发货？",
+    "answer": "该商品目前有货，下单后 48 小时内发出。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0121",
+    "question": "这个可以退货吗？",
+    "answer": "这款商品支持 7 天无理由退货，原包装退回即可。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0122",
+    "question": "退货要运费吗？",
+    "answer": "非质量问题退货运费由买家承担。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0123",
+    "question": "兼容我的手机吗？",
+    "answer": "此型号与您手机系统兼容，可放心购买。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0124",
+    "question": "这个可以退货吗？",
+    "answer": "�烫烫烫�",
+    "label": "polluted",
+    "fault_type": "gibberish"
+  },
+  {
+    "qa_id": "q0125",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0126",
+    "question": "退货要运费吗？",
+    "answer": "非质量问题退货运费由买家承担。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0127",
+    "question": "电池能用多久？",
+    "answer": "这款耳机的续航约 30 小时，支持快充。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0128",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券已叠加，实付金额以结算页为准。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0129",
+    "question": "这个可以退货吗？",
+    "answer": "这款商品支持 7 天无理由退货，原包装退回即可。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0130",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券已叠加，实付金额以结算页为准。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0131",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0132",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0133",
+    "question": "兼容我的手机吗？",
+    "answer": "此型号与您手机系统兼容，可放心购买。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0134",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0135",
+    "question": "什么时候发货？",
+    "answer": "该商品目前有货，下单后 48 小时内发出。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0136",
+    "question": "什么时候发货？",
+    "answer": "该商品目前有货，下单后 48 小时内发出。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0137",
+    "question": "兼容我的手机吗？",
+    "answer": "此型号与您手机系统兼容，可放心购买。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0138",
+    "question": "什么时候发货？",
+    "answer": "该问题与购物无关。",
+    "label": "polluted",
+    "fault_type": "off_topic"
+  },
+  {
+    "qa_id": "q0139",
+    "question": "电池能用多久？",
+    "answer": "这款耳机的续航约 30 小时，支持快充。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0140",
+    "question": "积分什么时候到账？",
+    "answer": "会员积分会在确认收货后 7 个工作日到账。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0141",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券已叠加，实付金额以结算页为准。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0142",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券已叠加，实付金额以结算页为准。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0143",
+    "question": "电池能用多久？",
+    "answer": "这款耳机的续航约 30 小时，支持快充。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0144",
+    "question": "积分什么时候到账？",
+    "answer": "会员积分会在确认收货后 7 个工作日到账。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0145",
+    "question": "退货要运费吗？",
+    "answer": "非质量问题退货运费由买家承担。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0146",
+    "question": "兼容我的手机吗？",
+    "answer": "此型号与您手机系统兼容，可放心购买。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0147",
+    "question": "兼容我的手机吗？",
+    "answer": "此型号与您手机系统兼容，可放心购买。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0148",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0149",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券已叠加，实付金额以结算页为准。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0150",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券已叠加，实付金额以结算页为准。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0151",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0152",
+    "question": "退货要运费吗？",
+    "answer": "非质量问题退货运费由买家承担。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0153",
+    "question": "这个可以退货吗？",
+    "answer": "这款商品支持 7 天无理由退货，原包装退回即可。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0154",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券已叠加，实付金额以结算页为准。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0155",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券已叠加，实付金额以结算页为准。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0156",
+    "question": "这个可以退货吗？",
+    "answer": "这款商品支持 7 天无理由退货，原包装退回即可。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0157",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0158",
+    "question": "这个可以退货吗？",
+    "answer": "这款商品支持 7 天无理由退货，原包装退回即可。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0159",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券已叠加，实付金额以结算页为准。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0160",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0161",
+    "question": "这个可以退货吗？",
+    "answer": "这款商品支持 7 天无理由退货，原包装退回即可。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0162",
+    "question": "退货要运费吗？",
+    "answer": "非质量问题退货运费由买家承担。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0163",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0164",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券已叠加，实付金额以结算页为准。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0165",
+    "question": "电池能用多久？",
+    "answer": "这款耳机的续航约 30 小时，支持快充。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0166",
+    "question": "兼容我的手机吗？",
+    "answer": "兼容我的手机吗？兼容我的手机吗？兼容我的手机吗？",
+    "label": "polluted",
+    "fault_type": "echo"
+  },
+  {
+    "qa_id": "q0167",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券已叠加，实付金额以结算页为准。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0168",
+    "question": "什么时候发货？",
+    "answer": "该商品目前有货，下单后 48 小时内发出。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0169",
+    "question": "兼容我的手机吗？",
+    "answer": "此型号与您手机系统兼容，可放心购买。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0170",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券已叠加，实付金额以结算页为准。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0171",
+    "question": "兼容我的手机吗？",
+    "answer": "此型号与您手机系统兼容，可放心购买。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0172",
+    "question": "积分什么时候到账？",
+    "answer": "会员积分会在确认收货后 7 个工作日到账。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0173",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券已叠加，实付金额以结算页为准。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0174",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0175",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0176",
+    "question": "积分什么时候到账？",
+    "answer": "会员积分会在确认收货后 7 个工作日到账。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0177",
+    "question": "退货要运费吗？",
+    "answer": "非质量问题退货运费由买家承担。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0178",
+    "question": "积分什么时候到账？",
+    "answer": "会员积分会在确认收货后 7 个工作日到账。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0179",
+    "question": "积分什么时候到账？",
+    "answer": "会员积分会在确认收货后 7 个工作日到账。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0180",
+    "question": "兼容我的手机吗？",
+    "answer": "此型号与您手机系统兼容，可放心购买。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0181",
+    "question": "这个可以退货吗？",
+    "answer": "这款商品支持 7 天无理由退货，原包装退回即可。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0182",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0183",
+    "question": "这个可以退货吗？",
+    "answer": "这款商品支持 7 天无理由退货，原包装退回即可。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0184",
+    "question": "积分什么时候到账？",
+    "answer": "会员积分会在确认收货后 7 个工作日到账。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0185",
+    "question": "退货要运费吗？",
+    "answer": "非质量问题退货运费由买家承担。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0186",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0187",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券已叠加，实付金额以结算页为准。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0188",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券已叠加，实付金额以结算页为准。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0189",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券已叠加，实付金额以结算页为准。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0190",
+    "question": "兼容我的手机吗？",
+    "answer": "此型号与您手机系统兼容，可放心购买。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0191",
+    "question": "什么时候发货？",
+    "answer": "该商品目前有货，下单后 48 小时内发出。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0192",
+    "question": "积分什么时候到账？",
+    "answer": "今天天气不错。",
+    "label": "polluted",
+    "fault_type": "off_topic"
+  },
+  {
+    "qa_id": "q0193",
+    "question": "什么时候发货？",
+    "answer": "该商品目前有货，下单后 48 小时内发出。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0194",
+    "question": "电池能用多久？",
+    "answer": "这款耳机的续航约 30 小时，支持快充。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0195",
+    "question": "兼容我的手机吗？",
+    "answer": "此型号与您手机系统兼容，可放心购买。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0196",
+    "question": "优惠券能用吗？",
+    "answer": "优惠券已叠加，实付金额以结算页为准。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0197",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0198",
+    "question": "兼容我的手机吗？",
+    "answer": "此型号与您手机系统兼容，可放心购买。",
+    "label": "clean",
+    "fault_type": null
+  },
+  {
+    "qa_id": "q0199",
+    "question": "我该买哪个尺码？",
+    "answer": "根据您的身高体重，建议选择 L 码，版型偏宽松。",
+    "label": "clean",
+    "fault_type": null
+  }
+]
