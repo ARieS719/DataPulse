@@ -2,12 +2,15 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 from dq_engine.lineage.graph import LineageGraph
 from dq_engine.lineage.parser import ColumnEdge
+from dq_engine.metadata import DataDictionary
 from fastapi.testclient import TestClient
 
-from web.api import app, set_chaos_runner, set_lineage_graph, set_store
+from web.api import app, set_chaos_runner, set_dictionary, set_lineage_graph, set_store
 from web.db import QualityStore
 
 VALID_YAML = """
@@ -25,11 +28,21 @@ rules:
     min: 0.01
 """
 
+DICT_YAML = (
+    Path(__file__).resolve().parents[1]
+    / "core"
+    / "dq_engine"
+    / "metadata"
+    / "contracts"
+    / "dictionary.yaml"
+)
+
 
 @pytest.fixture()
 def client():
     set_store(QualityStore())  # 内存模式，隔离测试
     set_lineage_graph(None)
+    set_dictionary(None)
     set_chaos_runner(None)
     with TestClient(app) as c:
         yield c
@@ -113,6 +126,62 @@ def test_health_summary(client):
     s = client.get("/api/quality/health").json()
     assert s["overall_pass_rate"] == round(1 / 3, 4)
     assert s["block_count"] == 1 and s["warn_count"] == 1 and s["table_count"] == 2
+    # 质量分：1 BLOCK(40) + 1 WARN(10) 占总 3 条 → 100 - (40+10)/3*... 见 compute_quality_score
+    assert s["quality_score"] == round(100 - 40 / 3 - 10 / 3, 1)
+    assert s["quality_grade"] == "C"  # 83.3 → C（≥70 <85）
+    assert all("quality_score" in t for t in s["tables"])
+
+
+def test_dictionary_endpoints_without_dictionary_return_503(client):
+    assert client.get("/api/dictionary").status_code == 503
+    assert client.get("/api/dictionary/sensitive").status_code == 503
+    assert client.get("/api/quality/sla").status_code == 503
+
+
+def test_dictionary_list_and_sensitive(client):
+    set_dictionary(DataDictionary.from_yaml(DICT_YAML))
+    r = client.get("/api/dictionary")
+    assert r.status_code == 200
+    body = r.json()
+    assert body["tables"] == ["ods.ai_qa_log", "ods.dim_user", "ods.fact_order", "ods.fact_payment"]
+    assert body["columns"] == len(body["rows"]) > 0
+    cols = {c["column"] for c in body["rows"] if c["table"] == "ods.fact_order"}
+    assert {"order_id", "user_id", "amount", "status"}.issubset(cols)
+
+    r2 = client.get("/api/dictionary/sensitive")
+    assert r2.status_code == 200
+    sensitive = r2.json()["columns"]
+    tables_cols = {(c["table"], c["column"]) for c in sensitive}
+    assert ("ods.dim_user", "user_id") in tables_cols
+    assert all(c["sensitivity"] in ("L3", "L4") for c in sensitive)
+
+
+def test_dictionary_blast_with_lineage(client):
+    set_dictionary(DataDictionary.from_yaml(DICT_YAML))
+    set_lineage_graph(_chain_graph())
+    r = client.get("/api/dictionary/blast", params={"table": "ods.dim_user", "column": "user_id"})
+    assert r.status_code == 200
+    assert r.json()["sensitivity"] == "L3" and r.json()["mask"] == "sha2"
+
+
+def test_dictionary_blast_unknown_column_returns_404(client):
+    set_dictionary(DataDictionary.from_yaml(DICT_YAML))
+    set_lineage_graph(_chain_graph())
+    r = client.get("/api/dictionary/blast", params={"table": "ods.dim_user", "column": "nope"})
+    assert r.status_code == 404
+
+
+def test_sla_breaches(client):
+    set_dictionary(DataDictionary.from_yaml(DICT_YAML))
+    # 未上报任何门禁 → 全部 4 张带 SLA 的表均 never_checked
+    body = client.get("/api/quality/sla").json()
+    assert len(body["breaches"]) == 4
+    assert all(b["reason"] == "never_checked" for b in body["breaches"])
+    # 上报 BLOCK → 该表转为 last_blocked
+    client.post("/api/quality/runs", json={"table_name": "ods.fact_order", "verdict": "BLOCK"})
+    body = client.get("/api/quality/sla").json()
+    by_table = {b["table"]: b for b in body["breaches"]}
+    assert by_table["ods.fact_order"]["reason"] == "last_blocked"
 
 
 def test_chaos_stub_then_runner(client):

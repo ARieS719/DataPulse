@@ -3,8 +3,10 @@
 启动：streamlit run web/dashboard.py
 
 展示：
-  * 健康度指标卡（通过率 / P0 熔断 / P1 告警 / 接入表数）
+  * 健康度指标卡（通过率 / P0 熔断 / P1 告警 / 质量分）
+  * 质量分与 SLA（分级 A-D + 超 SLA 清单，结合数据字典）
   * 字段级血缘拓扑（graphviz DOT，支持多选标红）
+  * 数据字典与敏感数据分级（口径/类型/分级/脱敏 + 敏感字段下游影响面）
   * 质检历史明细
   * AI-RCA 诊断书全文
 
@@ -25,8 +27,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "core"))
 import streamlit as st
 from dq_engine.lineage.graph import LineageGraph
 from dq_engine.lineage.scanner import scan_directory
+from dq_engine.metadata import DataDictionary
 
-from web.db import QualityStore
+from web.db import QualityStore, sla_breaches
 
 
 @st.cache_resource
@@ -53,21 +56,36 @@ def _build_lineage() -> LineageGraph | None:
     return graph
 
 
+@st.cache_resource
+def _build_dictionary() -> DataDictionary:
+    repo = Path(__file__).resolve().parents[1]
+    return DataDictionary.from_yaml(repo / "core" / "dq_engine" / "metadata" / "contracts" / "dictionary.yaml")
+
+
 def main() -> None:
     st.set_page_config(page_title="DataPulse 大盘", layout="wide")
     st.title("DataPulse · 数据可观测性大盘")
 
     store = _build_store()
 
-    # 1) 健康度指标
+    # 1) 健康度指标（含质量分与 SLA）
     summary = store.health_summary()
     c1, c2, c3, c4 = st.columns(4)
     c1.metric("质检通过率", f"{summary['overall_pass_rate'] * 100:.1f}%")
     c2.metric("P0 熔断次数", summary["block_count"])
     c3.metric("P1 告警次数", summary["warn_count"])
-    c4.metric("已接入表数", summary["table_count"])
+    c4.metric("质量分", f"{summary['quality_score']}（{summary['quality_grade']}）")
 
-    # 2) 血缘拓扑（标红 = 熔断爆炸半径可视化）
+    # 2) 超 SLA 清单
+    dictionary = _build_dictionary()
+    breaches = sla_breaches(store.recent_runs(), dictionary.sla_map())
+    if breaches:
+        st.subheader("⚠️ 超 SLA 清单")
+        st.dataframe(breaches, use_container_width=True, hide_index=True)
+    else:
+        st.caption("SLA：全部表均在时限内且最近一次门禁通过。")
+
+    # 3) 血缘拓扑（标红 = 熔断爆炸半径可视化）
     st.subheader("字段级血缘拓扑")
     graph = _build_lineage()
     if graph is not None and graph.stats()["table_nodes"]:
@@ -81,7 +99,26 @@ def main() -> None:
     else:
         st.info("血缘图未加载：设置环境变量 DQP_LINEAGE_SQL_DIR 指向 SQL 脚本目录后刷新。")
 
-    # 3) 质检历史
+    # 4) 数据字典与敏感数据分级
+    st.subheader("数据字典与敏感数据分级")
+    rows = dictionary.flat_rows()
+    st.dataframe(rows, use_container_width=True, hide_index=True)
+    sensitives = dictionary.sensitive_columns()
+    st.caption(f"L3+ 敏感字段 {len(sensitives)} 个：{'、'.join(c['column'] for c in sensitives) or '-'}")
+    if graph is not None:
+        pick = st.selectbox(
+            "敏感字段下游影响面（数据字典 × 血缘）",
+            [f"{c['table']}.{c['column']}" for c in sensitives],
+        )
+        if pick:
+            table, _, column = pick.partition(".")
+            impact = dictionary.downstream_impact(table, column, lineage_graph=graph)
+            st.caption(
+                f"{pick}（{impact['label']}，脱敏：{impact['mask']}）下游："
+                f"{' → '.join(impact['downstream_tables']) or '（无下游）'}"
+            )
+
+    # 5) 质检历史
     st.subheader("质检历史")
     runs = store.recent_runs(limit=50)
     if runs:
@@ -89,7 +126,7 @@ def main() -> None:
     else:
         st.info("暂无质检记录：M3 门禁跑通后此处展示每次审计结果。")
 
-    # 4) AI-RCA 诊断书
+    # 6) AI-RCA 诊断书
     st.subheader("AI-RCA 诊断书")
     reports = store.recent_reports(limit=10)
     if reports:

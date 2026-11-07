@@ -7,11 +7,15 @@
   GET  /api/lineage/upstream  血缘上游追溯
   POST /api/quality/runs      质检结果上报（M3 门禁执行器调用）
   GET  /api/quality/history   质检历史
-  GET  /api/quality/health    健康度汇总（通过率/熔断/告警/表数）
+  GET  /api/quality/health    健康度汇总（通过率/熔断/告警/表数 + 质量分/分级）
+  GET  /api/quality/sla       超 SLA 清单（结合数据字典表级 sla_hours）
+  GET  /api/dictionary        数据字典（口径/类型/分级/脱敏/关联规则/SLA）
+  GET  /api/dictionary/sensitive  敏感字段清单（L1-L4 分级）
+  GET  /api/dictionary/blast  敏感字段下游影响面（字典 × 血缘）
   POST /api/chaos/trigger     混沌故障触发（M6 接入 runner）
 
 启动：uvicorn web.api:app --host 127.0.0.1 --port 8000
-生产接线：set_store(QualityStore(conn_factory)) / set_lineage_graph(graph)
+生产接线：set_store / set_lineage_graph / set_dictionary
 """
 
 from __future__ import annotations
@@ -27,16 +31,18 @@ for _p in (_REPO, _REPO / "core"):
 
 import yaml
 from dq_engine.lineage.graph import LineageGraph
+from dq_engine.metadata import DataDictionary
 from dq_engine.rules.schema import Ruleset
 from fastapi import Depends, FastAPI, HTTPException, Query
 from pydantic import BaseModel, Field
 
-from web.db import QualityStore
+from web.db import QualityStore, sla_breaches
 
 app = FastAPI(title="DataPulse Control Plane", version="0.1.0")
 
 _store = QualityStore()  # 生产：QualityStore(conn_factory=lambda: psycopg.connect(dsn))
 _lineage_graph: LineageGraph | None = None
+_dictionary: DataDictionary | None = None
 _chaos_runner = None
 
 
@@ -52,6 +58,11 @@ def set_store(store: QualityStore) -> None:
 def set_lineage_graph(graph: LineageGraph | None) -> None:
     global _lineage_graph
     _lineage_graph = graph
+
+
+def set_dictionary(dictionary: DataDictionary | None) -> None:
+    global _dictionary
+    _dictionary = dictionary
 
 
 def set_chaos_runner(runner) -> None:
@@ -130,6 +141,43 @@ def history(
 @app.get("/api/quality/health")
 def health_summary(store: QualityStore = Depends(get_store)):
     return store.health_summary()
+
+
+@app.get("/api/quality/sla")
+def sla_status(store: QualityStore = Depends(get_store)):
+    """超 SLA 清单：结合数据字典的表级 sla_hours 与门禁历史。"""
+    if _dictionary is None:
+        raise HTTPException(status_code=503, detail="数据字典未加载：先 set_dictionary")
+    return {"breaches": sla_breaches(store.recent_runs(), _dictionary.sla_map())}
+
+
+@app.get("/api/dictionary")
+def dictionary_list(table: str | None = Query(None)):
+    """数据字典：字段口径/类型/敏感分级/脱敏/关联规则/表级 SLA。"""
+    if _dictionary is None:
+        raise HTTPException(status_code=503, detail="数据字典未加载：先 set_dictionary")
+    rows = [r for r in _dictionary.flat_rows() if table is None or r["table"] == table]
+    return {"tables": _dictionary.tables(), "columns": len(rows), "rows": rows}
+
+
+@app.get("/api/dictionary/sensitive")
+def dictionary_sensitive(min_level: str = Query("L3")):
+    if _dictionary is None:
+        raise HTTPException(status_code=503, detail="数据字典未加载：先 set_dictionary")
+    return {"min_level": min_level, "columns": _dictionary.sensitive_columns(min_level=min_level)}
+
+
+@app.get("/api/dictionary/blast")
+def dictionary_blast(table: str = Query(...), column: str = Query(...)):
+    """敏感字段所在表的下游影响面（数据字典 × 血缘联动）。"""
+    if _dictionary is None:
+        raise HTTPException(status_code=503, detail="数据字典未加载：先 set_dictionary")
+    if _lineage_graph is None:
+        raise HTTPException(status_code=503, detail="血缘图未加载：先扫描 SQL 脚本目录并 set_lineage_graph")
+    try:
+        return _dictionary.downstream_impact(table, column, lineage_graph=_lineage_graph)
+    except KeyError as exc:
+        raise HTTPException(status_code=404, detail=f"字典中不存在该字段: {exc}") from exc
 
 
 @app.post("/api/chaos/trigger")

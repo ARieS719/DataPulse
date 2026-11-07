@@ -33,6 +33,20 @@ docker compose --profile core up -d
 | GET /api/lineage/blast?table=fact_order | — | 下游 `dws_trade_daily → ads_gmv_daily`，max_depth=2 ✅ |
 | GET /（Streamlit） | — | HTTP 200（6467 bytes）✅ |
 
+## M6+ 治理扩展端点（TestClient 验证 + 联调接线）
+
+| 端点 | 验证方式 | 结果 |
+| --- | --- | --- |
+| GET /api/quality/health（质量分） | 混合 PASS/BLOCK/WARN 上报 | 质量分 83.3、C 级（BLOCK 40 分 / WARN 10 分权重）✅ |
+| GET /api/quality/sla | 数据字典 sla_map × 门禁历史 | 4 表 never_checked；BLOCK 后转 last_blocked ✅ |
+| GET /api/dictionary | 数据字典契约加载 | 4 表 20 字段（口径/类型/分级/脱敏/规则/SLA）✅ |
+| GET /api/dictionary/sensitive | min_level=L3 | L3+ 敏感字段清单（user_id 等）✅ |
+| GET /api/dictionary/blast | 字典 × 血缘联动 | `ods.dim_user.user_id`（L3/sha2）下游影响面 ✅ |
+| 未加载字典/血缘时的降级 | 直接访问 | HTTP 503（字典未加载）/ 404（字段不存在）✅ |
+
+告警闭环：`quality_gate_cli` 在 BLOCK 时经可插拔通知器投递 P0 告警
+（日志恒定生效；`DQP_WEBHOOK_URL` 可选钉钉/企微机器人，网络失败优雅兜底）。
+
 ## 降级策略（设计要点）
 
 web/db.py 的 QualityStore 在 PG 不可用时自动降级为进程内存模式（控制面可用性优先）；

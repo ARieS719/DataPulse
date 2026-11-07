@@ -170,11 +170,74 @@ class QualityStore:
         tables = [
             {"table": t, **b, "pass_rate": round(b["passed"] / b["runs"], 4)} for t, b in by_table.items()
         ]
+        for row in tables:
+            score = compute_quality_score([r for r in runs if r["table_name"] == row["table"]])
+            row["quality_score"] = score["overall"]
+            row["quality_grade"] = score["grade"]
         total = len(runs)
+        score = compute_quality_score(runs)
         return {
             "overall_pass_rate": round(sum(r["verdict"] == "PASS" for r in runs) / total, 4) if total else 0.0,
             "block_count": sum(r["verdict"] == "BLOCK" for r in runs),
             "warn_count": sum(r["verdict"] == "WARN" for r in runs),
             "table_count": len(tables),
             "tables": tables,
+            "quality_score": score["overall"],
+            "quality_grade": score["grade"],
         }
+
+
+# ------------------------------------------------------------ 质量分与 SLA（纯函数，可单测）
+
+
+def _grade(score: float) -> str:
+    if score >= 95:
+        return "A"
+    if score >= 85:
+        return "B"
+    if score >= 70:
+        return "C"
+    return "D"
+
+
+def compute_quality_score(runs: list[dict]) -> dict:
+    """质量分（100 分制）：BLOCK 权重 40、WARN 权重 10，按占比扣分。
+
+    分级：A ≥95 / B ≥85 / C ≥70 / D <70。
+    """
+    total = len(runs)
+    if not total:
+        return {"overall": 100.0, "grade": "A", "blocks": 0, "warns": 0, "passes": 0}
+    blocks = sum(r["verdict"] == "BLOCK" for r in runs)
+    warns = sum(r["verdict"] == "WARN" for r in runs)
+    penalty = 40 * (blocks / total) + 10 * (warns / total)
+    score = round(max(0.0, 100 - penalty), 1)
+    return {"overall": score, "grade": _grade(score), "blocks": blocks, "warns": warns, "passes": total - blocks - warns}
+
+
+def sla_breaches(runs: list[dict], sla_map: dict, now=None) -> list[dict]:
+    """超 SLA 清单：最近一次门禁距 now 超过 sla_hours，或最近一次 verdict=BLOCK。
+
+    runs：recent_runs() 输出（按 ts 降序）；sla_map：{table: hours}。
+    """
+    from datetime import datetime, timezone
+
+    latest: dict[str, dict] = {}
+    for r in runs:
+        latest.setdefault(r["table_name"], r)
+    now = now or datetime.now(timezone.utc)
+    breaches = []
+    for table, hours in sla_map.items():
+        last = latest.get(table)
+        if last is None:
+            breaches.append({"table": table, "sla_hours": hours, "reason": "never_checked", "last_verdict": None})
+            continue
+        last_verdict = last["verdict"]
+        ts = last["ts"]
+        if isinstance(ts, str):
+            ts = datetime.fromisoformat(ts)
+        if last_verdict == "BLOCK":
+            breaches.append({"table": table, "sla_hours": hours, "reason": "last_blocked", "last_verdict": last_verdict})
+        elif (now - ts).total_seconds() / 3600 > hours:
+            breaches.append({"table": table, "sla_hours": hours, "reason": "stale", "last_verdict": last_verdict})
+    return breaches
