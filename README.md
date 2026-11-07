@@ -17,8 +17,12 @@
 | 混沌拦截矩阵 | **召回 1.0（8/8 故障全检出）、误报 0.0（8 个阴性对照全放行）** | [chaos_matrix.md](docs/benchmarks/chaos_matrix.md) |
 | WAP 写入前熔断（POC） | 5/5：脏数据写入审计分支时 main 零暴露，校验通过后原子发布 | [wap_poc_result.md](docs/poc/wap_poc_result.md) |
 | Airflow 编排 | DAG 7/7 success；门禁 3 表 `verdict=PASS merged=True`；对账 3/3 | [airflow_verification.md](docs/benchmarks/airflow_verification.md) |
-| Web 控制面 | 8 个端点全通过（PostgreSQL 持久化 + 血缘 blast radius） | [web_verification.md](docs/benchmarks/web_verification.md) |
-| 测试与 CI 门禁 | 147 项测试、覆盖率 **95.34%**（门禁 ≥85%）、ruff 0 违规 | [ci.yml](.github/workflows/ci.yml) |
+| Web 控制面 | 12 个端点全通过（PostgreSQL 持久化 + 血缘 blast radius + 数据字典/敏感分级） | [web_verification.md](docs/benchmarks/web_verification.md) |
+| 数据字典与敏感分级 | 4 表 20 字段口径/SLA 契约，L1–L4 分级 + sha2 脱敏 + 敏感字段下游影响面 | [dictionary.yaml](core/dq_engine/metadata/contracts/dictionary.yaml) |
+| 质量分与 SLA | 100 分制质量分（A–D 分级）、表级 SLA 超时清单、P0/P1 可插拔告警 | [web/db.py](web/db.py) |
+| AI 语义质检评测 | 标注集 200 条，Precision/Recall/F1 均为 **1.0**（LLM 模式评测协议就绪） | [semantic_eval.md](docs/benchmarks/semantic_eval.md) |
+| 误报治理 | 误报率 **0.5 → 0.0** 的四轮归因与修复全程留痕 | [false_positive_governance.md](docs/benchmarks/false_positive_governance.md) |
+| 测试与 CI 门禁 | 160+ 项测试、覆盖率 **95.9%**（门禁 ≥85%）、ruff 0 违规 | [ci.yml](.github/workflows/ci.yml) |
 | 字段级血缘 | 6 个 SQL 脚本 → 42 列节点 / 40 条边；blast radius 一次 BFS 12ms | [lineage_stats.json](docs/benchmarks/lineage_stats.json) |
 
 ## 该项目要解决的四个问题
@@ -79,14 +83,14 @@
 
 ```
 lakehouse-dq-engine/
-├── core/            # ★ 主线：质检引擎（rules 编译器 / quality_gate / anomaly / lineage / ai）
+├── core/            # ★ 主线：质检引擎（rules 编译器 / quality_gate / anomaly / lineage / ai / metadata 数据字典 / alert 告警）
 ├── foundation/      # 底座：零依赖数据生成器 + 四层 ETL（SparkSession 工厂、WAP 表属性）
 ├── chaos/           # 混沌注入器（8+1 类故障，含数据倾斜）
-├── eval/            # Golden Dataset 规则评测 + 混沌专用规则集
+├── eval/            # Golden Dataset 规则评测 + 混沌专用规则集 + AI 语义质检评测
 ├── web/             # FastAPI 控制面 + Streamlit 大盘（PG/内存双模）
 ├── airflow/         # 自定义镜像 + WAP 熔断 DAG（LocalExecutor）
 ├── scripts/         # POC / 对账 / 血缘扫描 / 混沌实验 / 实时水位线 / Windows 补丁
-├── tests/           # 147 项单元测试（覆盖率 95%）
+├── tests/           # 160+ 项单元测试（覆盖率 95.9%）
 └── docs/            # 架构 / 路线图 / 运行排查手册 / 基准证据（benchmarks/）
 ```
 
